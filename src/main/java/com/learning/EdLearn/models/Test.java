@@ -24,6 +24,19 @@ public class Test {
 
     private String dateTime;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Student>students = new ArrayList<>();
+
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Questions> questionsList = new ArrayList<>();
 
     public Test() {

@@ -25,7 +25,6 @@ public class DiscussionService {
         Discussion existingDiscussion = discussionRepository.findByRoomID(roomId);
 
         if (existingDiscussion != null) {
-            // Update fields based on your needs
             existingDiscussion.setName(updatedDiscussion.getName());
             existingDiscussion.setEmail(updatedDiscussion.getEmail());
             existingDiscussion.setGoogleMeetLink(updatedDiscussion.getGoogleMeetLink());

@@ -1,9 +1,9 @@
 package com.learning.EdLearn.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Student {
@@ -13,6 +13,27 @@ public class Student {
     private int id ;
     private String name ;
     private String email;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<StudentAnswer> studentAnswers = new ArrayList<>();
+    private int score;
+    private String feedback;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<StudentAnswer> getStudentAnswers() {
+        return studentAnswers;
+    }
+
+    public void setStudentAnswers(List<StudentAnswer> studentAnswers) {
+        this.studentAnswers = studentAnswers;
+    }
 
     public String getName() {
         return name;
@@ -36,6 +57,13 @@ public class Student {
     public Student(String name, String email) {
         this.name = name;
         this.email = email;
+    }
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
     }
 
 }

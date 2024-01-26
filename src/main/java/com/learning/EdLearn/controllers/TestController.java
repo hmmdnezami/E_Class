@@ -1,55 +1,48 @@
 package com.learning.EdLearn.controllers;
-import com.learning.EdLearn.models.Question;
+
+
+import com.learning.EdLearn.models.OptionCheck;
+import com.learning.EdLearn.models.Questions;
 import com.learning.EdLearn.models.Test;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import com.learning.EdLearn.repository.TestRepo;
 import com.learning.EdLearn.service.TestService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-import java.util.Optional;
+import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/tests")
+@RequestMapping("/api")
 public class TestController {
 
-    private final TestService testService;
+    @Autowired
+    private TestRepo testRepo;
 
-    public TestController(TestService testService) {
-        this.testService = testService;
+    @Autowired
+    private TestService testService;
+
+    @GetMapping("/tests")
+    public List<Test> getAllTests() {
+        return testRepo.findAll();
     }
 
-    @GetMapping
-    public ResponseEntity<List<Test>> getAllTests() {
-        List<Test> tests = testService.getAllTests();
-        return ResponseEntity.ok(tests);
+    @PostMapping("/tests")
+    public Test addTests(@RequestBody Test test) {
+        List <Questions> questionsList= test.getQuestionsList();
+        System.out.println(questionsList);
+        return testRepo.save(test);
     }
 
-    @GetMapping("/{testId}")
-    public ResponseEntity<Test> getTestById(@PathVariable Long testId) {
-        Optional<Test> testOptional = testService.getTestById(testId);
-        return testOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/tests/{roomId}")
+    public List<Questions> getTestsForRoomID(@PathVariable String roomId){
+        return this.testService.getTestQuestion(roomId);
     }
 
-    @PostMapping
-    public ResponseEntity<Test> createTest(@RequestBody Test test) {
-        Test createdTest = testService.createTest(test);
-        return ResponseEntity.ok(createdTest);
+    @PostMapping("/tests/check/{roomId}")
+    public List<OptionCheck> questionCheck(@PathVariable String roomId) {
+        return this.testService.checkTestQuestion(roomId);
     }
 
-    @PutMapping("/{testId}")
-    public ResponseEntity<Test> updateTest(@PathVariable Long testId, @RequestBody Test updatedTest) {
-        Test updated = testService.updateTest(testId, updatedTest);
-        return ResponseEntity.ok(updated);
-    }
 
-    @DeleteMapping("/{testId}")
-    public ResponseEntity<Void> deleteTest(@PathVariable Long testId) {
-        testService.deleteTest(testId);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/{testId}/questions")
-    public ResponseEntity<Void> setQuestionsAndAnswers(@PathVariable Long testId, @RequestBody List<Question> questions) {
-        testService.setQuestionsAndAnswers(testId, questions);
-        return ResponseEntity.ok().build();
-    }
 }

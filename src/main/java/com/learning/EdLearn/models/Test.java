@@ -1,35 +1,109 @@
 package com.learning.EdLearn.models;
-import com.learning.EdLearn.models.Question;
+
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
 public class Test {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String roomId;
+
+
+    private String name;
+
+    private String email;
+
+    @Column(unique = true)
+    private String roomID;
+
+    private String testLink;
+
     private String dateTime;
 
-   @OneToMany
-    private List<Question> questions=new ArrayList<>();
-    @OneToMany
-    private List<Student> students=new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Student>students = new ArrayList<>();
 
-    public String getRoomId() {
-        return roomId;
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Questions> questionsList = new ArrayList<>();
+
+    public Test() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(String roomID) {
+        this.roomID = roomID;
+    }
+
+    public String getTestLink() {
+        return testLink;
+    }
+
+    public void setTestLink(String testLink) {
+        this.testLink = testLink;
     }
 
     public String getDateTime() {
         return dateTime;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public List<Questions> getQuestionsList() {
+        return questionsList;
     }
 
+    public void setQuestionsList(List<Questions> questionsList) {
+        this.questionsList = questionsList;
+    }
+
+    public Test(String name, String email, String roomID, String testLink, String dateTime, List<Questions> questionsList) {
+        this.name = name;
+        this.email = email;
+        this.roomID = roomID;
+        this.testLink = testLink;
+        this.dateTime = dateTime;
+        this.questionsList = questionsList;
+    }
 }

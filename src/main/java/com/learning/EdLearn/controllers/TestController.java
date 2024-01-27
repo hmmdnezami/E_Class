@@ -1,8 +1,8 @@
 package com.learning.EdLearn.controllers;
 
 
-import com.learning.EdLearn.models.OptionCheck;
 import com.learning.EdLearn.models.Questions;
+import com.learning.EdLearn.models.StudentResult;
 import com.learning.EdLearn.models.Test;
 import com.learning.EdLearn.repository.TestRepo;
 import com.learning.EdLearn.service.TestService;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api")
@@ -39,9 +38,9 @@ public class TestController {
         return this.testService.getTestQuestion(roomId);
     }
 
-    @PostMapping("/tests/check/{roomId}")
-    public List<OptionCheck> questionCheck(@PathVariable String roomId) {
-        return this.testService.checkTestQuestion(roomId);
+    @PostMapping("/tests/check/{roomId}/{studentId}")
+    public StudentResult questionCheck(@PathVariable String roomId, @RequestBody Test test, @PathVariable String studentId ) {
+            return this.testService.checkTestQuestion(roomId, test,studentId);
     }
 
 }

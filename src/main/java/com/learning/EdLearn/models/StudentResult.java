@@ -15,14 +15,13 @@ public class StudentResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NonNull
     private  String studentId;
 
     private String roomId;
 
+    @OneToMany(mappedBy = "studentResult", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OptionCheck> optionChecks = new ArrayList<>();
 
-    @OneToMany
-    private List<OptionCheck> optionChecks = new ArrayList<>() ;
 
     public StudentResult() {
     }

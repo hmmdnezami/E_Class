@@ -1,28 +1,30 @@
 package com.learning.EdLearn.models;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "option_check")
 public class OptionCheck {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String question ;
 
-    private boolean check ;
+    private boolean flag ;
     private String correctAnswer;
 
-    public boolean isCheck() {
-        return check;
+    @ManyToOne
+    private StudentResult studentResult;
+
+    public boolean isFlag() {
+        return flag;
     }
 
-    public void setCheck(boolean check) {
-        this.check = check;
+    public void setFlag(boolean check) {
+        this.flag = check;
     }
 
     public String getCorrectAnswer() {
@@ -34,9 +36,9 @@ public class OptionCheck {
         return question;
     }
 
-    public OptionCheck(String question, boolean check, String correctAnswer) {
+    public OptionCheck(String question, boolean flag, String correctAnswer) {
         this.question = question;
-        this.check = check;
+        this.flag = flag;
         this.correctAnswer = correctAnswer;
     }
 
@@ -56,8 +58,8 @@ public class OptionCheck {
         this.correctAnswer = correctAnswer;
     }
 
-    public OptionCheck(boolean check, String correctAnswer) {
-        this.check = check;
+    public OptionCheck(boolean flag, String correctAnswer) {
+        this.flag = flag;
         this.correctAnswer = correctAnswer;
     }
 }

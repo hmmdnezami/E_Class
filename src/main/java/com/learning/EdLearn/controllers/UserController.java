@@ -7,6 +7,7 @@ import com.learning.EdLearn.repository.TeacherRepo;
 import com.learning.EdLearn.repository.UserRepo;
 import com.learning.EdLearn.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @GetMapping("/user")
     public List<User> getUsers() {
         return this.userService.getAll();
@@ -43,9 +47,11 @@ public class UserController {
 
     @PostMapping("/user")
     public User createUser(@RequestBody User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User user1 = this.userRepo.save(user);
         String email = user.getEmail();
         String name = user.getName();
+
         UserRole userRole1 = user.getUserRole();
         if (userRole1.equals(UserRole.STUDENT)) {
             Student student = new Student(name, email) ;
